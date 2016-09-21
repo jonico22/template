@@ -21,6 +21,8 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var pug = require('gulp-pug');
 
+var browserify = require( 'browserify' );
+var source = require( 'vinyl-source-stream' );
 
 var paths = {
     css: ['./*.css', '!*.min.css'],
@@ -112,9 +114,33 @@ gulp.task('pug', function() {
     .pipe(gulp.dest('../app'));
 });
 
-
-
 gulp.task('styles', ['cssnano']);
+
+gulp.task("transform", function() {
+    return gulp.src("es6.js")
+    .pipe( babel({
+        presets: ['es2015']
+    }) )
+    .on("error",function(error){
+        console.log( error );
+    })
+    .pipe( gulp.dest('..app/js') );
+});
+
+gulp.task( 'transform-runtime', function(){
+    return browserify({
+        entries:"es6.js",
+        debug:true
+    })
+    .transform( "babelify", { presets:["es2015"], plugins: ["transform-runtime"] } )
+    .bundle()
+    .on( "error", function(error) {
+        console.log( "[Bundle Error] " + error );
+    })
+    .pipe( source('es6.js') )
+    .pipe( gulp.dest('../app/js') );
+});
+
 /**
  * Process tasks and reload browsers on file changes.
  *
