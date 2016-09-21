@@ -1,0 +1,20 @@
+// ----------------------------------------------------------------------
+
+  // Retina Images
+
+// ----------------------------------------------------------------------
+
+// example: @include retina("logo2x.png", 100, 50);
+
+@mixin retina($image, $width, $height) {
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+    only screen and (-moz-min-device-pixel-ratio: 1.5),
+    only screen and (-o-min-device-pixel-ratio: 3 / 2),
+    only screen and (min-device-pixel-ratio: 1.5),
+    only screen and (min-resolution: 1.5dppx) {
+    background-image: url("#{$image}");
+    background-size: $width + px $height + px;
+    //background-size: $width / 10 + rem $height / 10 + rem; // Use this if you've set HTML font size value to 62.5%
+    background-size: $width / 16 + rem $height / 16 + rem;
+  }
+}

@@ -1,0 +1,12 @@
+//- layout.pug
+doctype html
+html(lang="es")
+  head
+    block title
+        title Default title
+    include partial/head.pug
+  body
+    include partial/header.pug
+    block content
+    include partial/footer.pug
+    block javascript
