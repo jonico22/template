@@ -6,7 +6,8 @@ html(lang="es")
         title Default title
     include partial/head.pug
   body
-    include partial/header.pug
-    block content
-    include partial/footer.pug
-    block javascript
+    .wrapper
+      include partial/header.pug
+      block content
+      include partial/footer.pug
+      block javascript
