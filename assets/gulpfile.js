@@ -23,7 +23,10 @@ var pug = require('gulp-pug');
 
 var browserify = require( 'browserify' );
 var source = require( 'vinyl-source-stream' );
+var buffer = require('vinyl-buffer');
+var uglify = require('gulp-uglify');
 
+var babel = require('gulp-babel');
 var paths = {
     css: ['./*.css', '!*.min.css'],
     //icons: 'assets/images/svg-icons/*.svg',
@@ -116,30 +119,28 @@ gulp.task('pug', function() {
 
 gulp.task('styles', ['cssnano']);
 
-gulp.task("transform", function() {
-    return gulp.src("es6.js")
-    .pipe( babel({
-        presets: ['es2015']
-    }) )
-    .on("error",function(error){
-        console.log( error );
-    })
-    .pipe( gulp.dest('..app/js') );
-});
-
 gulp.task( 'transform-runtime', function(){
     return browserify({
-        entries:"es6.js",
+        entries:"src/js/es6.js",
         debug:true
     })
-    .transform( "babelify", { presets:["es2015"], plugins: ["transform-runtime"] } )
+    .transform( "babelify", { presets:["es2015"],plugins: ['babel-polyfill'] } )
     .bundle()
-    .on( "error", function(error) {
-        console.log( "[Bundle Error] " + error );
-    })
     .pipe( source('es6.js') )
+    .pipe(buffer())
+    .pipe(uglify())
     .pipe( gulp.dest('../app/js') );
 });
+
+gulp.task('js', () =>
+    gulp.src('src/js/es6.js')
+        .pipe(babel({
+            presets: ['es2015'],
+            plugins: ['babel-polyfill']
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest('../app/js'))
+);
 
 /**
  * Process tasks and reload browsers on file changes.
