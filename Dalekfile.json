@@ -1,0 +1,10 @@
+{
+    "browsers" : [{
+        "ieWin" : {
+            "type" : "remote",
+            "actAs" : "ie",
+            "host" : "10.211.55.4",
+            "port" : "9020"
+        }
+    }]
+}
