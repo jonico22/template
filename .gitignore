@@ -2,3 +2,4 @@ node_modules
 app/js/vendor
 .vscode
 temp
+assets/bower_components

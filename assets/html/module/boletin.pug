@@ -1,15 +1,14 @@
-
 extends ../layout/layout.pug
 
 block title
-  title Plantilla Base
+  title Personalización
 
 block content
   .container
     .row
-      h1 My Article
-
+        h1 Personalización Boletin Web
+        hr
+        include partial/paso3.pug
 block javascript
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js')
     script(src='https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js')
-    script(src="js/scripts.min.js")

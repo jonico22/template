@@ -26,6 +26,9 @@ var source = require( 'vinyl-source-stream' );
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 
+var debowerify = require('debowerify');
+
+
 var babel = require('gulp-babel');
 var paths = {
     css: ['./*.css', '!*.min.css'],
@@ -119,6 +122,7 @@ gulp.task('pug', function() {
 
 gulp.task('styles', ['cssnano']);
 
+// es2015 browserify
 gulp.task( 'transform-runtime', function(){
     return browserify({
         entries:"src/js/es6.js",
@@ -142,6 +146,16 @@ gulp.task('js', () =>
         .pipe(gulp.dest('../app/js'))
 );
 
+gulp.task('browserify', function() {  
+  return browserify('src/js/es6.js')
+    .transform(debowerify)
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest('../app/js'));
+});
+
 /**
  * Process tasks and reload browsers on file changes.
  *
@@ -150,6 +164,7 @@ gulp.task('js', () =>
 gulp.task('watch', function() {
 
     browserSync.init({
+        browser: ["google chrome"],
         server: {
             baseDir: "../app"
         }
