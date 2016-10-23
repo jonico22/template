@@ -21,15 +21,8 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var pug = require('gulp-pug');
 
-var browserify = require( 'browserify' );
-var source = require( 'vinyl-source-stream' );
-var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 
-var debowerify = require('debowerify');
-
-
-var babel = require('gulp-babel');
 var paths = {
     css: ['./*.css', '!*.min.css'],
     //icons: 'assets/images/svg-icons/*.svg',
@@ -121,40 +114,6 @@ gulp.task('pug', function() {
 });
 
 gulp.task('styles', ['cssnano']);
-
-// es2015 browserify
-gulp.task( 'transform-runtime', function(){
-    return browserify({
-        entries:"src/js/es6.js",
-        debug:true
-    })
-    .transform( "babelify", { presets:["es2015"],plugins: ['babel-polyfill'] } )
-    .bundle()
-    .pipe( source('es6.js') )
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe( gulp.dest('../app/js') );
-});
-
-gulp.task('js', () =>
-    gulp.src('src/js/es6.js')
-        .pipe(babel({
-            presets: ['es2015'],
-            plugins: ['babel-polyfill']
-        }))
-        .pipe(uglify())
-        .pipe(gulp.dest('../app/js'))
-);
-
-gulp.task('browserify', function() {  
-  return browserify('src/js/es6.js')
-    .transform(debowerify)
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(gulp.dest('../app/js'));
-});
 
 /**
  * Process tasks and reload browsers on file changes.

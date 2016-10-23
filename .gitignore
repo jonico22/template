@@ -3,3 +3,5 @@ app/js/vendor
 .vscode
 temp
 assets/bower_components
+.Ds_Store
+assets/.DS_Store
